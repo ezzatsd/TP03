@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2026-02-18T14:33:45Z"
+  generation: 2
+  labels:
+    app: kuard
+    env: dev
+    run: kuard
+  name: kuard
+  namespace: default
+  resourceVersion: "13111"
+  uid: 5f12d011-f60d-4bf6-a206-e3ccfbb86c87
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: kuard
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: kuard
+    spec:
+      containers:
+      - image: gcr.io/kuar-demo/kuard-amd64:blue
+        imagePullPolicy: IfNotPresent
+        name: kuard-amd64
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  conditions:
+  - lastTransitionTime: "2026-02-18T14:33:45Z"
+    lastUpdateTime: "2026-02-18T14:33:45Z"
+    message: Deployment does not have minimum availability.
+    reason: MinimumReplicasUnavailable
+    status: "False"
+    type: Available
+  - lastTransitionTime: "2026-02-18T14:33:45Z"
+    lastUpdateTime: "2026-02-18T14:33:45Z"
+    message: ReplicaSet "kuard-b596789bc" is progressing.
+    reason: ReplicaSetUpdated
+    status: "True"
+    type: Progressing
+  observedGeneration: 2
+  replicas: 2
+  terminatingReplicas: 0
+  unavailableReplicas: 2
+  updatedReplicas: 2
