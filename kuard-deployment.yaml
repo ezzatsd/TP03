@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kuard
+  annotations:
+    kubernetes.io/change-cause: "Update to green kuard"
   labels:
     app: kuard
     run: kuard
@@ -11,16 +13,21 @@ spec:
     matchLabels:
       run: kuard
   strategy:
-    type: Recreate
-  replicas: 2
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  replicas: 3
   template:
     metadata:
       labels:
         run: kuard
+      annotations:
+        kubernetes.io/change-cause: "Update to green kuard"
     spec:
       containers:
         - name: kuard
-          image: docker.io/pheely/kuard:latest
-          imagePullPolicy: IfNotPresent
+          image: docker.io/roboticcheese/kuard:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
